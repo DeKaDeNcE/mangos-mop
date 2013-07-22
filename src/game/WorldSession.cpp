@@ -132,7 +132,7 @@ void WorldSession::SendPacket(WorldPacket const* packet)
     if (!m_Socket)
         return;
 
-    if (opcodeTable[packet->GetOpcode()].status == STATUS_UNHANDLED)
+    if (packet->GetOpcode() != MSG_WOW_CONNECTION && (packet->GetOpcode() >= MAX_OPCODE_TABLE_SIZE || opcodeTable[packet->GetOpcode()].status == STATUS_UNHANDLED))
     {
         sLog.outError("SESSION: tried to send an unhandled opcode 0x%.4X", packet->GetOpcode());
         return;

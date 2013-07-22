@@ -32,10 +32,10 @@
 #include "WorldSession.h"
 
 /// List of Opcodes
-/// Max Opcode value in 4.3.4.15595 is 65535
+/// Max Opcode value in 5.1.0.16357 is 0xFFF
 enum Opcodes
 {
-    MSG_WOW_CONNECTION                                    = 0x4F57, // 4.3.4 15595
+    MSG_WOW_CONNECTION                                    = 0x4F57, // 5.1.0 16357
     SMSG_AUTH_CHALLENGE                                   = 0x4542, // 4.3.4 15595
     CMSG_AUTH_SESSION                                     = 0x0449, // 4.3.4 15595
     SMSG_AUTH_RESPONSE                                    = 0x5DB6, // 4.3.4 15595
@@ -1424,7 +1424,7 @@ enum Opcodes
     SMSG_PVP_OPTIONS_ENABLED                              = 0x50A1, // 4.3.4 15595
 };
 
-#define MAX_OPCODE_TABLE_SIZE 0xFFFF
+#define MAX_OPCODE_TABLE_SIZE 0xFFF
 
 extern void InitializeOpcodes();
 
