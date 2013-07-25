@@ -227,8 +227,8 @@ enum Opcodes
     CMSG_CHANNEL_UNBAN                                    = 0x2D46, // 4.3.4 15595
     CMSG_CHANNEL_ANNOUNCEMENTS                            = 0x1146, // 4.3.4 15595
     CMSG_CHANNEL_MODERATE                                 = 0x2944, // 4.3.4 15595
-    SMSG_UPDATE_OBJECT                                    = 0x4715, // 4.3.4 15595
-    SMSG_DESTROY_OBJECT                                   = 0x4724, // 4.3.4 15595
+    SMSG_UPDATE_OBJECT                                    = 0x120,  // 5.1.0 16357
+    SMSG_DESTROY_OBJECT                                   = 0x34C,  // 5.1.0 16357
     CMSG_USE_ITEM                                         = 0x2C06, // 4.3.4 15595
     CMSG_OPEN_ITEM                                        = 0x6A34, // 4.3.4 15595
     CMSG_READ_ITEM                                        = 0x2F16, // 4.3.4 15595
