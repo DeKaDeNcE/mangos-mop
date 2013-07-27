@@ -371,7 +371,7 @@ Spell::Spell(Unit* caster, SpellEntry const* info, bool triggered, ObjectGuid or
     //        m_spellInfo = info;
     //}
     //else
-    //    m_spellInfo = info;
+        m_spellInfo = info;
 
     m_triggeredBySpellInfo = triggeredBy;
 
