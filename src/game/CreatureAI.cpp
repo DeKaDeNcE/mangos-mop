@@ -47,16 +47,17 @@ CanCastResult CreatureAI::CanCastSpell(Unit* pTarget, const SpellEntry* pSpell, 
             return CAST_FAIL_STATE;
 
         // Check for power (also done by Spell::CheckCast())
-        if (m_creature->GetPower((Powers)pSpell->powerType) < Spell::CalculatePowerCost(pSpell, m_creature))
+        if (m_creature->GetPower((Powers)pSpell->GetPowerType()) < Spell::CalculatePowerCost(pSpell, m_creature))
             return CAST_FAIL_POWER;
     }
 
-    if (const SpellRangeEntry* pSpellRange = sSpellRangeStore.LookupEntry(pSpell->rangeIndex))
+    uint32 rangeIndex = pSpell->GetRangeIndex();
+    if (const SpellRangeEntry* pSpellRange = sSpellRangeStore.LookupEntry(rangeIndex))
     {
         if (pTarget != m_creature)
         {
             // pTarget is out of range of this spell (also done by Spell::CheckCast())
-            float fDistance = m_creature->GetCombatDistance(pTarget, pSpell->rangeIndex == SPELL_RANGE_IDX_COMBAT);
+            float fDistance = m_creature->GetCombatDistance(pTarget, rangeIndex == SPELL_RANGE_IDX_COMBAT);
 
             if (fDistance > (m_creature->IsHostileTo(pTarget) ? pSpellRange->maxRange : pSpellRange->maxRangeFriendly))
                 return CAST_FAIL_TOO_FAR;
