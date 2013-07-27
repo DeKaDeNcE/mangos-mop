@@ -852,6 +852,9 @@ void Object::BuildValuesUpdate(uint8 updatetype, ByteBuffer* data, UpdateMask* u
             }
         }
     }
+
+    // dynamic values
+    *data << uint8(0);
 }
 
 void Object::ClearUpdateMask(bool remove)
