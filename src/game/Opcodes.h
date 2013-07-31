@@ -105,7 +105,7 @@ enum Opcodes
     SMSG_TRANSFER_PENDING                                 = 0x18A6, // 4.3.4 15595
     SMSG_TRANSFER_ABORTED                                 = 0x0537, // 4.3.4 15595
     SMSG_CHARACTER_LOGIN_FAILED                           = 0x1042,
-    SMSG_LOGIN_SETTIMESPEED                               = 0x4D15, // 4.3.4 15595
+    SMSG_LOGIN_SETTIMESPEED                               = 0xE68,  // 5.1.0 16357
     SMSG_GAMETIME_UPDATE                                  = 0x1044,
     CMSG_GAMETIME_SET                                     = 0x1045,
     SMSG_GAMETIME_SET                                     = 0x1046,
@@ -971,7 +971,7 @@ enum Opcodes
     MSG_PARTY_ASSIGNMENT                                  = 0x0424, // 4.3.4 15595
     SMSG_OFFER_PETITION_ERROR                             = 0x1390,
     SMSG_TIME_SYNC_REQ                                    = 0x410,  // 5.1.0 16357
-    CMSG_TIME_SYNC_RESP                                   = 0x3B0C, // 4.3.4 15595
+    CMSG_TIME_SYNC_RESP                                   = 0xB5F,  // 5.1.0 16357
     CMSG_SEND_LOCAL_EVENT                                 = 0x1393,
     CMSG_SEND_GENERAL_TRIGGER                             = 0x1394,
     CMSG_SEND_COMBAT_TRIGGER                              = 0x1395,
@@ -1422,6 +1422,7 @@ enum Opcodes
     SMSG_PVP_REWARDS                                      = 0x5DA4, // 4.3.4 15595
     CMSG_REQUEST_PVP_OPTIONS_ENABLED                      = 0x24A1, // 4.3.4 15595
     SMSG_PVP_OPTIONS_ENABLED                              = 0x50A1, // 4.3.4 15595
+    CMSG_OBJECT_UPDATE_FAILED                             = 0x2FB,  // 5.1.0 16357
 };
 
 #define MAX_OPCODE_TABLE_SIZE 0xFFF

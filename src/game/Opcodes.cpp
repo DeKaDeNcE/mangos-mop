@@ -111,7 +111,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_TRANSFER_PENDING,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_TRANSFER_ABORTED,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_CHARACTER_LOGIN_FAILED,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(SMSG_LOGIN_SETTIMESPEED,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_LOGIN_SETTIMESPEED,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_GAMETIME_UPDATE,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_GAMETIME_SET,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(SMSG_GAMETIME_SET,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
@@ -691,7 +691,7 @@ void InitializeOpcodes()
     //OPCODE(CMSG_PLAYER_AI_CHEAT,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_CANCEL_AUTO_REPEAT_SPELL,                STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleCancelAutoRepeatSpellOpcode);
     //OPCODE(MSG_GM_ACCOUNT_ONLINE,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
-    OPCODE(MSG_LIST_STABLED_PETS,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleListStabledPetsOpcode     );
+    //OPCODE(MSG_LIST_STABLED_PETS,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleListStabledPetsOpcode     );
     //OPCODE(CMSG_STABLE_PET,                              STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleStablePet                 );
     //OPCODE(CMSG_UNSTABLE_PET,                            STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleUnstablePet               );
     //OPCODE(CMSG_BUY_STABLE_SLOT,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBuyStableSlot             );
@@ -986,7 +986,7 @@ void InitializeOpcodes()
     //OPCODE(MSG_PARTY_ASSIGNMENT,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandlePartyAssignmentOpcode     );
     //OPCODE(SMSG_OFFER_PETITION_ERROR,                    STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     OPCODE(SMSG_TIME_SYNC_REQ,                           STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(CMSG_TIME_SYNC_RESP,                          STATUS_LOGGEDIN, PROCESS_INPLACE,      &WorldSession::HandleTimeSyncResp              );
+    OPCODE(CMSG_TIME_SYNC_RESP,                          STATUS_LOGGEDIN, PROCESS_INPLACE,      &WorldSession::HandleTimeSyncResp              );
     //OPCODE(CMSG_SEND_LOCAL_EVENT,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_SEND_GENERAL_TRIGGER,                    STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_SEND_COMBAT_TRIGGER,                     STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
@@ -1042,7 +1042,7 @@ void InitializeOpcodes()
     //OPCODE(MSG_RAID_READY_CHECK_FINISHED,                STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleRaidReadyCheckFinishedOpcode);
     //OPCODE(CMSG_COMPLAIN,                                STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleComplainOpcode            );
     //OPCODE(SMSG_COMPLAIN_RESULT,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(SMSG_FEATURE_SYSTEM_STATUS,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_FEATURE_SYSTEM_STATUS,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_GM_SHOW_COMPLAINTS,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_GM_UNSQUELCH,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_CHANNEL_SILENCE_VOICE,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
@@ -1404,4 +1404,5 @@ void InitializeOpcodes()
     //OPCODE(SMSG_PVP_REWARDS,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_REQUEST_PVP_OPTIONS_ENABLED,             STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleRequestPvPOptionsEnabledOpcode );
     //OPCODE(SMSG_PVP_OPTIONS_ENABLED,                     STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(CMSG_OBJECT_UPDATE_FAILED,                    STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleObjectUpdateFailedOpcode  );
 };

@@ -610,7 +610,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder *holder)
     data << pCurrChar->GetPositionX();
     data << pCurrChar->GetPositionY();
     data << pCurrChar->GetPositionZ();
-    data << pCurrChar->GetOrientation();
+    data << NormalizeOrientation(pCurrChar->GetOrientation());
     SendPacket(&data);
 
     // load player specific part before send times
@@ -618,21 +618,20 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder *holder)
     SendAccountDataTimes(PER_CHARACTER_CACHE_MASK);
 
     data.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 34);        // added in 2.2.0
-    data << uint8(2);                                       // status
     data << uint32(1);                                      // Scrolls of Ressurection?
     data << uint32(1);
     data << uint32(2);
     data << uint32(0);
-    data.WriteBit(true);
-    data.WriteBit(true);
+    data << uint8(2);                                       // complain system status
     data.WriteBit(false);
+    data.WriteBit(false);                                   // session time alert
     data.WriteBit(true);
-    data.WriteBit(false);
-    data.WriteBit(false);                                   // enable(1)/disable(0) voice chat interface in client
+    data.WriteBit(false);                                   // enable(1)/disable(0) voice chat interface in client ?
+    data.WriteBit(true);                                    // quick ticket?
+    data << uint32(60);
+    data << uint32(10);
     data << uint32(1);
     data << uint32(0);
-    data << uint32(10);
-    data << uint32(60);
     SendPacket(&data);
 
     // Send MOTD
