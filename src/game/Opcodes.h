@@ -356,7 +356,7 @@ enum Opcodes
     SMSG_SET_PROFICIENCY                                  = 0x6207, // 4.3.4 15595
     CMSG_SET_ACTION_BUTTON                                = 0x6F06, // 4.3.4 15595
     SMSG_ACTION_BUTTONS                                   = 0x38B5, // 4.3.4 15595
-    SMSG_INITIAL_SPELLS                                   = 0x0104, // 4.3.4 15595
+    SMSG_INITIAL_SPELLS                                   = 0x155,  // 5.1.0 16357
     SMSG_LEARNED_SPELL                                    = 0x58A2, // 4.3.4 15595
     SMSG_SUPERCEDED_SPELL                                 = 0x35B0, // 4.3.4 15595
     CMSG_NEW_SPELL_SLOT                                   = 0x112E,
@@ -1236,8 +1236,8 @@ enum Opcodes
     SMSG_PET_UPDATE_COMBO_POINTS                          = 0x4325, // 4.3.4 15595
     CMSG_ENABLETAXI                                       = 0x0C16, // 4.3.4 15595
     SMSG_PRE_RESURRECT                                    = 0x6C36, // 4.3.4 15595
-    SMSG_AURA_UPDATE_ALL                                  = 0x6916, // 4.3.4 15595
-    SMSG_AURA_UPDATE                                      = 0x4707, // 4.3.4 15595
+    SMSG_AURA_UPDATE_ALL                                  = 0x484,  // 5.1.0 16357
+    SMSG_AURA_UPDATE                                      = 0x7AD,  // 5.1.0 16357
     CMSG_FLOOD_GRACE_CHEAT                                = 0x1498,
     SMSG_SERVER_FIRST_ACHIEVEMENT                         = 0x6424, // 4.3.4 15595
     SMSG_PET_LEARNED_SPELL                                = 0x0507, // 4.3.4 15595
