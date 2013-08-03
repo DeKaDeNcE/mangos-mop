@@ -114,11 +114,11 @@ enum Opcodes
     CMSG_SERVERTIME                                       = 0x1049,
     SMSG_SERVERTIME                                       = 0x104A,
     CMSG_PLAYER_LOGOUT                                    = 0x104B,
-    CMSG_LOGOUT_REQUEST                                   = 0x0A25, // 4.3.4 15595
-    SMSG_LOGOUT_RESPONSE                                  = 0x0524, // 4.3.4 15595
-    SMSG_LOGOUT_COMPLETE                                  = 0x2137, // 4.3.4 15595
-    CMSG_LOGOUT_CANCEL                                    = 0x2324, // 4.3.4 15595
-    SMSG_LOGOUT_CANCEL_ACK                                = 0x6514, // 4.3.4 15595
+    CMSG_LOGOUT_REQUEST                                   = 0x5A0,  // 5.1.0 16357
+    SMSG_LOGOUT_RESPONSE                                  = 0x9A5,  // 5.1.0 16357
+    SMSG_LOGOUT_COMPLETE                                  = 0x2A0,  // 5.1.0 16357
+    CMSG_LOGOUT_CANCEL                                    = 0x7C0,  // 5.1.0 16357
+    SMSG_LOGOUT_CANCEL_ACK                                = 0xF6C,  // 5.1.0 16357
     CMSG_NAME_QUERY                                       = 0x1EC,  // 5.1.0 16357
     SMSG_NAME_QUERY_RESPONSE                              = 0x30D,  // 5.1.0 16357
     CMSG_REALM_QUERY                                      = 0xA4D,  // 5.1.0 16357
@@ -133,8 +133,8 @@ enum Opcodes
     SMSG_QUEST_QUERY_RESPONSE                             = 0x6936, // 4.3.4 15595
     CMSG_GAMEOBJECT_QUERY                                 = 0x4017, // 4.3.4 15595
     SMSG_GAMEOBJECT_QUERY_RESPONSE                        = 0x0915, // 4.3.4 15595
-    CMSG_CREATURE_QUERY                                   = 0x2706, // 4.3.4 15595
-    SMSG_CREATURE_QUERY_RESPONSE                          = 0x6024, // 4.3.4 15595
+    CMSG_CREATURE_QUERY                                   = 0x285,  // 5.1.0 16357
+    SMSG_CREATURE_QUERY_RESPONSE                          = 0xAA4,  // 5.1.0 16357
     CMSG_WHO                                              = 0x6C15, // 4.3.4 15595
     SMSG_WHO                                              = 0x6907, // 4.3.4 15595
     CMSG_WHOIS                                            = 0x6B05, // 4.3.4 15595
