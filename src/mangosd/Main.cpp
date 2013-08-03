@@ -56,6 +56,7 @@ DatabaseType CharacterDatabase;                             ///< Accessor to the
 DatabaseType LoginDatabase;                                 ///< Accessor to the realm/login database
 
 uint32 realmID;                                             ///< Id of the realm
+std::string realmName;                                      ///< Name of the realm
 
 /// Print out the usage string for this program on the console.
 void usage(const char* prog)

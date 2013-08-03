@@ -529,6 +529,7 @@ bool Master::_StartDB()
     clearOnlineAccounts();
 
     sWorld.LoadDBVersion();
+    realmName = sWorld.GetRealmName(realmID);
 
     sLog.outString("Using World DB: %s", sWorld.GetDBVersion());
     sLog.outString("Using creature EventAI: %s", sWorld.GetCreatureEventAIVersion());

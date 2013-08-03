@@ -1658,12 +1658,12 @@ namespace MaNGOS
                     data->Initialize(SMSG_MESSAGECHAT, 100);// guess size
                     *data << uint8(CHAT_MSG_SYSTEM);
                     *data << uint32(LANG_UNIVERSAL);
-                    *data << uint64(0);
+                    *data << ObjectGuid();
                     *data << uint32(0);                     // can be chat msg group or something
-                    *data << uint64(0);
+                    *data << ObjectGuid();
                     *data << uint32(lineLength);
                     *data << line;
-                    *data << uint8(0);
+                    *data << uint16(0);
 
                     data_list.push_back(data);
                 }
@@ -2268,6 +2268,21 @@ void World::UpdateMaxSessionCounters()
 {
     m_maxActiveSessionCount = std::max(m_maxActiveSessionCount, uint32(m_sessions.size() - m_QueuedSessions.size()));
     m_maxQueuedSessionCount = std::max(m_maxQueuedSessionCount, uint32(m_QueuedSessions.size()));
+}
+
+std::string World::GetRealmName(uint32 realmId)
+{
+    std::string name;
+
+    if (QueryResult* result = LoginDatabase.PQuery("SELECT name FROM realmlist WHERE id = %u", realmID))
+    {
+        Field* fields = result->Fetch();
+        std::string name = fields[0].GetCppString();
+
+        delete result;
+    }
+
+    return name;
 }
 
 void World::LoadDBVersion()

@@ -591,6 +591,7 @@ class World
 
         // used World DB version
         void LoadDBVersion();
+        std::string GetRealmName(uint32 realmId);
         char const* GetDBVersion() { return m_DBVersion.c_str(); }
         char const* GetCreatureEventAIVersion() { return m_CreatureEventAIVersion.c_str(); }
 
@@ -690,6 +691,7 @@ class World
 };
 
 extern uint32 realmID;
+extern std::string realmName;
 
 #define sWorld MaNGOS::Singleton<World>::Instance()
 #endif
