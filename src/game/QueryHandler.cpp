@@ -131,17 +131,23 @@ void WorldSession::HandleNameQueryOpcode(WorldPacket& recv_data)
     recv_data >> guid;
     uint32 bytesLeft = recv_data.wpos() - recv_data.rpos();
 
+    sLog.outDebug("Received CMSG_NAME_QUERY from %s. Guid %s bytesleft %u.",
+        _player->GetGuidStr().c_str(), guid.GetString().c_str(), bytesLeft);
+
     switch (bytesLeft)
     {
         case 4:
         {
             uint32 realmId;
             recv_data >> realmId;
+            if (!realmId)
+                realmId = realmID;
 
             // actually will never happen
             if (realmID != realmId)
             {
-                sLog.outError("Warning! Quering players from other realms is not supported. Queried realm id: %u This realm id: %u", realmId, realmID);
+                sLog.outError("Warning! Quering players from other realms is not supported. Queried realm id: %u This realm id: %u Guid: %s",
+                    realmId, realmID, guid.GetString().c_str());
 
                 WorldPacket data(SMSG_NAME_QUERY_RESPONSE, 9);
                 data << guid.WriteAsPacked();
