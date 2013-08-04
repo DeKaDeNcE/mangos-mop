@@ -2274,7 +2274,7 @@ std::string World::GetRealmName(uint32 realmId)
 {
     std::string name;
 
-    if (QueryResult* result = LoginDatabase.PQuery("SELECT name FROM realmlist WHERE id = %u", realmID))
+    if (QueryResult* result = LoginDatabase.PQuery("SELECT name FROM realmlist WHERE id = %u", realmId))
     {
         Field* fields = result->Fetch();
         std::string name = fields[0].GetCppString();
