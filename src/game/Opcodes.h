@@ -242,7 +242,7 @@ enum Opcodes
     SMSG_GAMEOBJECT_CUSTOM_ANIM                           = 0x4936, // 4.3.4 15595
     CMSG_AREATRIGGER                                      = 0x0937, // 4.3.4 15595
     CMSG_MOVE_START_FORWARD                               = 0x0FE,  // 5.1.0 16357
-    CMSG_MOVE_START_BACKWARD                              = 0x330A, // 4.3.4 15595
+    CMSG_MOVE_START_BACKWARD                              = 0x37A,  // 5.1.0 16357
     CMSG_MOVE_STOP                                        = 0x9DF,  // 5.1.0 16357
     CMSG_MOVE_START_STRAFE_LEFT                           = 0x3A16, // 4.3.4 15595
     CMSG_MOVE_START_STRAFE_RIGHT                          = 0x3A02, // 4.3.4 15595
