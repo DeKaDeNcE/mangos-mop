@@ -298,7 +298,7 @@ enum Opcodes
     CMSG_FORCE_MOVE_UNROOT_ACK                            = 0x7808, // 4.3.4 15595
     MSG_MOVE_ROOT                                         = 0x10ED,
     MSG_MOVE_UNROOT                                       = 0x10EE,
-    MSG_MOVE_HEARTBEAT                                    = 0x3914, // 4.3.4 15595
+    MSG_MOVE_HEARTBEAT                                    = 0xBD2,  // 5.1.0 16357
     SMSG_MOVE_KNOCK_BACK                                  = 0x5CB4, // 4.3.4 15595
     CMSG_MOVE_KNOCK_BACK_ACK                              = 0x721C, // 4.3.4 15595
     SMSG_MOVE_UPDATE_KNOCK_BACK                           = 0x3DB2, // 4.3.4 15595
@@ -648,7 +648,7 @@ enum Opcodes
     SMSG_PERIODICAURALOG                                  = 0x0416, // 4.3.4 15595
     SMSG_SPELLDAMAGESHIELD                                = 0x2927, // 4.3.4 15595
     SMSG_SPELLNONMELEEDAMAGELOG                           = 0x4315, // 4.3.4 15595
-    CMSG_LEARN_TALENT                                     = 0x0306, // 4.3.4 15595
+    CMSG_LEARN_TALENT                                     = 0x136,  // 5.1.0 16357
     SMSG_RESURRECT_FAILED                                 = 0x1253,
     CMSG_TOGGLE_PVP                                       = 0x6815, // 4.3.4 15595
     SMSG_ZONE_UNDER_ATTACK                                = 0x0A06, // 4.3.4 15595
