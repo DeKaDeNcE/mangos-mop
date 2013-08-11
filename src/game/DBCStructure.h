@@ -2576,9 +2576,9 @@ struct SpellEffect
 {
     SpellEffect()
     {
-        memset(effects, 0, countof(effects));
+        memset(effects, 0, sizeof(effects));
     }
-    SpellEffectEntry const* effects[20];
+    SpellEffectEntry const* effects[MAX_EFFECT_INDEX];
 };
 
 typedef std::map<uint32, SpellEffect> SpellEffectMap;
