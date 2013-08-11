@@ -252,9 +252,9 @@ MovementStatusElements MovementHeartBeatSequence[] =
     MSEPositionX,
     MSEPositionY,
     MSEPositionZ,
-    MSEUnknownCount,
     MSEHasMovementFlags,
     MSEHasFallData,
+    MSEUnknownCount,
     MSEHasTimestamp,
     MSEHasMovementFlags2,
     MSEHasPitch,
@@ -320,7 +320,7 @@ MovementStatusElements MovementHeartBeatSequence[] =
     MSEPositionO,
     MSEPitch,
     MSETimestamp,
-    MSEHasSplineElevation,
+    MSESplineElevation,
     MSEEnd,
 };
 
