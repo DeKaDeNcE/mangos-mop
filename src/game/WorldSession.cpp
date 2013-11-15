@@ -130,7 +130,10 @@ char const* WorldSession::GetPlayerName() const
 void WorldSession::SendPacket(WorldPacket const* packet)
 {
     if (!m_Socket)
+    {
+        sLog.outError("Can't send %u (%s), socket is NULL", packet->GetOpcode(), packet->GetOpcodeName());
         return;
+    }
 
     if (packet->GetOpcode() != MSG_WOW_CONNECTION && (packet->GetOpcode() >= MAX_OPCODE_TABLE_SIZE || opcodeTable[packet->GetOpcode()].status == STATUS_UNHANDLED))
     {
@@ -176,6 +179,8 @@ void WorldSession::SendPacket(WorldPacket const* packet)
 
 #endif                                                  // !MANGOS_DEBUG
 
+    sLog.outDebug("Send packet %u %s to %s", packet->GetOpcode(), LookupOpcodeName(packet->GetOpcode()), GetPlayer() ? GetPlayer()->GetGuidStr().c_str() : "<unknown>");
+
     if (m_Socket->SendPacket(*packet) == -1)
         m_Socket->CloseSocket();
 }
@@ -217,6 +222,8 @@ bool WorldSession::Update(PacketFilter& updater)
                         packet->GetOpcodeName(),
                         packet->GetOpcode());
         #endif*/
+
+        DEBUG_LOG("Received packet %u %s from %s", packet->GetOpcode(), LookupOpcodeName(packet->GetOpcode()), GetPlayer() ? GetPlayer()->GetGuidStr().c_str() : "<unknown>");
 
         OpcodeHandler const& opHandle = opcodeTable[packet->GetOpcode()];
         try
@@ -715,42 +722,51 @@ ExpansionInfoStrunct raceExpansionInfo[MAX_PLAYABLE_RACES] =
 
 void WorldSession::SendAuthResponse(uint8 code, bool queued, uint32 queuePos)
 {
+    bool hasAccountData = true;
+
     WorldPacket packet(SMSG_AUTH_RESPONSE, 1 /*bits*/ + 4 + 1 + 4 + 1 + 4 + 1 + 1 + (queued ? 4 : 0));
-    packet.WriteBit(1);                                     // has account data
-    packet.WriteBits(MAX_CLASSES - 1, 25);                  // Activation count for classes
-    packet.WriteBit(0);
-    packet.WriteBit(0);
-    packet.WriteBits(0, 22);                                // Activate character template windows/button
-    packet.WriteBits(MAX_PLAYABLE_RACES, 25);               // Activation count for races
-
-    packet.WriteBit(queued);                                // IsInQueue
-    if (queued)
-    {
-        packet.WriteBit(false);                             // unk
-        packet << uint32(queuePos);
-    }
-
-    // account info
-    for (int i = 0; i < MAX_PLAYABLE_RACES; ++i)
-    {
-        packet << uint8(raceExpansionInfo[i].expansion);
-        packet << uint8(raceExpansionInfo[i].raceOrClass);
-    }
-
-    packet << uint32(0);                                    // billing time remaining
-    packet << uint32(0);                                    // unk
-    packet << uint8(0);                                     // unk
-    packet << uint8(Expansion());                           // Unknown, these two show the same
-    packet << uint8(Expansion());                           // Unknown, these two show the same
-
-    for (int i = 0; i < MAX_CLASSES - 1; ++i)
-    {
-        packet << uint8(classExpansionInfo[i].raceOrClass);
-        packet << uint8(classExpansionInfo[i].expansion);
-    }
-
-    packet << uint32(0);
     packet << uint8(code);
+    packet.WriteBit(queued);                            // IsInQueue
+    if (queued)
+        packet.WriteBit(1);                             // unk
+
+    packet.WriteBit(hasAccountData);
+    if (hasAccountData)
+    {
+        packet.WriteBit(0);
+        packet.WriteBits(0, 21);
+        packet.WriteBits(0, 21);
+        packet.WriteBits(MAX_PLAYABLE_RACES, 23);
+        packet.WriteBit(0);
+        packet.WriteBit(0);
+        packet.WriteBit(0);
+        packet.WriteBits(MAX_CLASSES - 1, 23);
+
+        packet << uint32(0);
+        packet << uint32(0);
+        packet << uint8(Expansion());                   // Unknown, these two show the same
+
+        for (uint8 i = 0; i < MAX_PLAYABLE_RACES; ++i)
+        {
+            packet << uint8(raceExpansionInfo[i].expansion);
+            packet << uint8(raceExpansionInfo[i].raceOrClass);
+        }
+
+        packet << uint8(Expansion());                   // Unknown, these two show the same
+        packet << uint32(0);
+
+        for (uint8 i = 0; i < MAX_CLASSES - 1; ++i)
+        {
+            packet << uint8(classExpansionInfo[i].raceOrClass);
+            packet << uint8(classExpansionInfo[i].expansion);
+        }
+
+        packet << uint32(0);
+        packet << uint32(0);
+    }
+
+    if (queued)
+        packet << uint32(queuePos);
 
     SendPacket(&packet);
 }
@@ -846,11 +862,11 @@ void WorldSession::SendAccountDataTimes(uint32 mask)
 {
     WorldPacket data(SMSG_ACCOUNT_DATA_TIMES, 4 + 1 + 4 + 8 * 4); // changed in WotLK
     data << uint32(time(NULL));                             // unix time of something
-    data << uint8(1);
     data << uint32(mask);                                   // type mask
     for (uint32 i = 0; i < NUM_ACCOUNT_DATA_TYPES; ++i)
         if (mask & (1 << i))
             data << uint32(GetAccountData(AccountDataType(i))->Time);// also unix time
+    data.WriteBit(1);
     SendPacket(&data);
 }
 
@@ -969,6 +985,7 @@ void WorldSession::ReadAddonsInfo(ByteBuffer &data)
     {
         uint32 addonsCount;
         addonInfo >> addonsCount;                         // addons count
+        DEBUG_LOG("Addon count: %u", addonsCount);
 
         for (uint32 i = 0; i < addonsCount; ++i)
         {
@@ -1022,46 +1039,58 @@ void WorldSession::SendAddonsInfo()
     };
 
     WorldPacket data(SMSG_ADDON_INFO, 4);
+    data.WriteBits(0, 18);                      // banned count
+    data.WriteBits(m_addonsList.size(), 23);    // addons count
 
+    ByteBuffer buffer;
     for (AddonsList::iterator itr = m_addonsList.begin(); itr != m_addonsList.end(); ++itr)
     {
+        bool bit0 = true;
+        bool bit1 = false;
+        bool bit2 = false;
+        data.WriteBit(bit0);                                //data.WriteBit(itr->CRC != 0x4c1c776d);
+        data.WriteBit(bit1);                                // non-standard CRC
+        data.WriteBit(bit2);
+        if (bit2)
+        {
+            data.WriteBits(0, 8);                           // string length
+            //buffer.WriteStringData(..);                   // use <Addon>\<Addon>.url file or not
+        }
+        if (bit1)
+        {
+            // append CRC
+        }
+        if (bit0)
+        {
+            buffer << uint8(0);
+            buffer << uint32(0);
+        }
+
         uint8 state = 2;                                    // 2 is sent here
-        data << uint8(state);
-
-        uint8 unk1 = 1;                                     // 1 is sent here
-        data << uint8(unk1);
-        if (unk1)
-        {
-            uint8 unk2 = (itr->CRC != 0x4c1c776d);          // If addon is Standard addon CRC
-            data << uint8(unk2);                            // if 1, than add addon public signature
-            if (unk2)                                       // if CRC is wrong, add public key (client need it)
-                data.append(tdata, sizeof(tdata));
-
-            data << uint32(0);
-        }
-
-        uint8 unk3 = 0;                                     // 0 is sent here
-        data << uint8(unk3);                                // use <Addon>\<Addon>.url file or not
-        if (unk3)
-        {
-            // String, 256 (null terminated?)
-            data << uint8(0);
-        }
+        buffer << uint8(state);
     }
 
-    m_addonsList.clear();
-
-    uint32 count = 0;
-    data << uint32(count);                                  // BannedAddons count
-    /*for(uint32 i = 0; i < count; ++i)
+    /*if (bannedAddons)
     {
-        uint32
-        string (16 bytes)
-        string (16 bytes)
-        uint32
-        uint32
-        uint32
+        foreach(bannedAddon)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                buffer << uint32(0);
+                buffer << uint32(0);
+            }
+
+            buffer << uint32(0);
+            buffer << uint32(0);
+            buffer << uint32(0);
+        }
     }*/
+
+    data.FlushBits();
+    if (!buffer.empty())
+        data.append(buffer);
+
+    m_addonsList.clear();
 
     SendPacket(&data);
 }

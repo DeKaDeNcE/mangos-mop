@@ -177,8 +177,8 @@ int WorldSocket::SendPacket(const WorldPacket& pct)
     if (m_Crypt.IsInitialized())
     {
         uint32 totalLength = pct.size();
-        totalLength <<= 12;
-        totalLength |= ((uint32)pct.GetOpcode() & 0xFFF);
+        totalLength <<= 13;
+        totalLength |= ((uint32)pct.GetOpcode() & 0x1FFF);
 
         header.header[0] = (uint32)((totalLength & 0xFF));
         header.header[1] = (uint32)((totalLength >> 8) & 0xFF);
@@ -269,6 +269,8 @@ int WorldSocket::open(void* a)
     if (SendPacket(data) == -1)
         return -1;
 
+    DEBUG_LOG("Sent MSG_WOW_CONNECTION to %s", m_Address.c_str());
+
     // Register with ACE Reactor
     if (reactor()->register_handler(this, ACE_Event_Handler::READ_MASK | ACE_Event_Handler::WRITE_MASK) == -1)
     {
@@ -287,6 +289,7 @@ int WorldSocket::HandleWowConnection(WorldPacket& recvPacket)
     std::string ClientToServerMsg;
     recvPacket >> ClientToServerMsg;
 
+    DEBUG_LOG("Received MSG_WOW_CONNECTION FROM %s", m_Session ? m_Session->GetRemoteAddress().c_str() : "<unk>");
     if (strcmp(ClientToServerMsg.c_str(), "D OF WARCRAFT CONNECTION - CLIENT TO SERVER") != 0)
     {
         sLog.outError("WorldSocket::ProcessIncoming: received wrong data in MSG_WOW_CONNECTION.");
@@ -298,7 +301,11 @@ int WorldSocket::HandleWowConnection(WorldPacket& recvPacket)
 
 int WorldSocket::SendAuthChallenge()
 {
+    DEBUG_LOG("Sending SMSG_AUTH_CHALLENGE");
     WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
+
+    packet << uint16(0);                                    // crap
+    packet << uint8(1);
 
     BigNumber seed1;
     seed1.SetRand(16 * 8);
@@ -309,7 +316,6 @@ int WorldSocket::SendAuthChallenge()
     packet.append(seed2.AsByteArray(16), 16);               // new encryption seeds
 
     packet << uint32(m_Seed);
-    packet << uint8(1);
 
     if (SendPacket(packet) == -1)
         return -1;
@@ -522,8 +528,8 @@ int WorldSocket::handle_input_header(void)
         m_Crypt.DecryptRecv(clientHeader, 4);
 
         uint32 value = *(uint32*)clientHeader;
-        uint32 opcode = value & 0xFFF;
-        uint16 size = (uint16)((value & ~(uint32)0xFFF) >> 12);
+        uint32 opcode = value & 0x1FFF;
+        uint16 size = (uint16)((value & ~(uint32)0x1FFF) >> 13);
 
         header.size = size + 4;
         header.cmd = opcode; 
@@ -842,7 +848,7 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
                 }
                 else
                 {
-                    sLog.outError("WorldSocket::ProcessIncoming: Client not authed opcode = %u", uint32(opcode));
+                    sLog.outError("WorldSocket::ProcessIncoming: Client not authed opcode = %u (0x%X)", uint32(opcode), uint32(opcode));
                     return -1;
                 }
             }
@@ -886,35 +892,34 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     WorldPacket packet;
 
     recvPacket.read_skip<uint32>();
-    recvPacket.read_skip<uint16>();
-    recvPacket.read_skip<uint8>();
-    recvPacket >> clientBuild;
-    recvPacket.read_skip<uint16>();
-    recvPacket >> digest[10];
-    recvPacket >> digest[18];
-    recvPacket >> digest[12];
-    recvPacket >> digest[5];
-    recvPacket.read_skip<uint64>();
-    recvPacket >> digest[15];
-    recvPacket >> digest[9];
-    recvPacket >> digest[19];
-    recvPacket >> digest[4];
-    recvPacket >> digest[7];
-    recvPacket >> digest[16];
-    recvPacket >> digest[3];
+    recvPacket >> digest[14];
     recvPacket >> digest[8];
     recvPacket.read_skip<uint32>();
-    recvPacket.read_skip<uint8>();
-    recvPacket >> digest[17];
-    recvPacket >> digest[6];
-    recvPacket >> digest[0];
-    recvPacket >> digest[1];
-    recvPacket >> digest[11];
-    recvPacket >> clientSeed;
-    recvPacket >> digest[2];
-    recvPacket.read_skip<uint32>();
-    recvPacket >> digest[14];
+    recvPacket >> digest[10];
+    recvPacket >> digest[19];
+    recvPacket >> digest[16];
     recvPacket >> digest[13];
+    recvPacket >> digest[4];
+    recvPacket.read_skip<uint8>();
+    recvPacket >> digest[9];
+    recvPacket >> digest[0];
+    recvPacket >> clientSeed;
+    recvPacket >> digest[5];
+    recvPacket >> digest[2];
+    recvPacket >> clientBuild;
+    recvPacket >> digest[12];
+    recvPacket.read_skip<uint32>();
+    recvPacket >> digest[18];
+    recvPacket >> digest[17];
+    recvPacket >> digest[11];
+    recvPacket.read_skip<uint64>();
+    recvPacket >> digest[7];
+    recvPacket >> digest[1];
+    recvPacket >> digest[3];
+    recvPacket.read_skip<uint8>();
+    recvPacket >> digest[6];
+    recvPacket.read_skip<uint32>();
+    recvPacket >> digest[15];
 
     recvPacket >> m_addonSize;                            // addon data size
 
@@ -932,12 +937,12 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     // Check the version of client trying to connect
     if(!IsAcceptableClientBuild(clientBuild))
     {
-        packet.Initialize (SMSG_AUTH_RESPONSE, 2);
-        packet.WriteBit(false);         // no account data
-        packet.WriteBit(false);         // no queue
-        packet << uint8 (AUTH_VERSION_MISMATCH);
+        //packet.Initialize (SMSG_AUTH_RESPONSE, 2);
+        //packet.WriteBit(false);         // no account data
+        //packet.WriteBit(false);         // no queue
+        //packet << uint8 (AUTH_VERSION_MISMATCH);
 
-        SendPacket (packet);
+        //SendPacket (packet);
 
         sLog.outError ("WorldSocket::HandleAuthSession: Sent Auth Response (version mismatch).");
         return -1;

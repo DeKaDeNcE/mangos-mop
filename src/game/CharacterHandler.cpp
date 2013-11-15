@@ -148,8 +148,7 @@ void WorldSession::HandleCharEnum(QueryResult * result)
 
     ByteBuffer buffer;
 
-    data.WriteBits(0, 23);
-    data.WriteBits(result ? result->GetRowCount() : 0, 17);
+    data.WriteBits(result ? result->GetRowCount() : 0, 16);
 
     if (result)
     {
@@ -167,6 +166,8 @@ void WorldSession::HandleCharEnum(QueryResult * result)
     }
 
     data.WriteBit(1);
+    data.WriteBits(0, 21);
+
     if (!buffer.empty())
     {
         data.FlushBits();
