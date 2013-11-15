@@ -183,7 +183,6 @@ DBCStorage <SpellEquippedItemsEntry> sSpellEquippedItemsStore(SpellEquippedItems
 DBCStorage <SpellInterruptsEntry> sSpellInterruptsStore(SpellInterruptsEntryfmt);
 DBCStorage <SpellLevelsEntry> sSpellLevelsStore(SpellLevelsEntryfmt);
 DBCStorage <SpellPowerEntry> sSpellPowerStore(SpellPowerEntryfmt);
-DBCStorage <SpellReagentsEntry> sSpellReagentsStore(SpellReagentsEntryfmt);
 DBCStorage <SpellScalingEntry> sSpellScalingStore(SpellScalingEntryfmt);
 DBCStorage <SpellShapeshiftEntry> sSpellShapeshiftStore(SpellShapeshiftEntryfmt);
 DBCStorage <SpellTargetRestrictionsEntry> sSpellTargetRestrictionsStore(SpellTargetRestrictionsEntryfmt);
@@ -620,7 +619,9 @@ void LoadDBCStores(const std::string& dataPath)
                     break;
             }
 
-            sSpellEffectMap[spellEffect->EffectSpellId].effects[spellEffect->EffectIndex] = spellEffect;
+            // TODO: load all difficulties
+            if (spellEffect->EffectSpellId < MAX_EFFECT_INDEX && spellEffect->Difficulty == 0)
+                sSpellEffectMap[spellEffect->EffectSpellId].effects[spellEffect->EffectIndex] = spellEffect;
         }
     }
 
@@ -628,7 +629,6 @@ void LoadDBCStores(const std::string& dataPath)
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellInterruptsStore,     dbcPath,"SpellInterrupts.dbc");
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellLevelsStore,         dbcPath,"SpellLevels.dbc");
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellPowerStore,          dbcPath,"SpellPower.dbc");
-    LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellReagentsStore,       dbcPath,"SpellReagents.dbc");
     // FIXME
     //LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellScalingStore,        dbcPath,"SpellScaling.dbc");
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellShapeshiftStore,     dbcPath,"SpellShapeshift.dbc");
@@ -852,11 +852,11 @@ void LoadDBCStores(const std::string& dataPath)
     }
 
     // Check loaded DBC files proper version
-    if (!sAreaStore.LookupEntry(5290)              ||       // last area (areaflag) added in 5.1.0 16357
-        !sCharTitlesStore.LookupEntry(338)         ||       // last char title added in 5.1.0 16357
-        !sGemPropertiesStore.LookupEntry(2402)     ||       // last gem property added in 5.1.0 16357
-        !sMapStore.LookupEntry(1113)               ||       // last map added in 5.1.0 16357
-        !sSpellStore.LookupEntry(136408)           )        // last added spell in 5.1.0 16357
+    if (!sAreaStore.LookupEntry(5491)              ||       // last area (areaflag) added in 5.4.1 17538
+        !sCharTitlesStore.LookupEntry(389)         ||       // last char title added in 5.4.1 17538
+        !sGemPropertiesStore.LookupEntry(2467)     ||       // last gem property added in 5.4.1 17538
+        !sMapStore.LookupEntry(1173)               ||       // last map added in 5.4.1 17538
+        !sSpellStore.LookupEntry(152028)           )        // last added spell in 5.4.1 17538
     {
         sLog.outError("\nYou have mixed version DBC files. Please re-extract DBC files for one from client build: %s",AcceptableClientBuildsListStr().c_str());
         Log::WaitBeforeContinueIfNeed();

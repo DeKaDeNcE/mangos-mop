@@ -614,18 +614,20 @@ struct BarberShopStyleEntry
 struct BattlemasterListEntry
 {
     uint32  id;                                             // 0        m_ID
-    int32   mapid[10];                                      // 1-10     m_mapID[8]
-    uint32  type;                                           // 11       m_instanceType
-    //uint32 canJoinAsGroup;                                // 12       m_groupsAllowed
-    DBCString name;                                         // 13       m_name_lang
-    uint32 maxGroupSize;                                    // 14       m_maxGroupSize
-    uint32 HolidayWorldStateId;                             // 15       m_holidayWorldState
-    uint32 minLevel;                                        // 16       m_minlevel (sync with PvPDifficulty.dbc content)
-    uint32 maxLevel;                                        // 17       m_maxlevel (sync with PvPDifficulty.dbc content)
-    uint32 maxGroupSizeRated;                               // 18       4.0.1
-    uint32 minPlayers;                                      // 19       4.0.6.13596
-    uint32 maxPlayers;                                      // 20       4.0.1
-    uint32 rated;                                           // 21       4.0.3, value 2 for Rated Battlegrounds
+    int32   mapid[16];                                      // 1-16     m_mapID[10]
+    uint32  type;                                           // 17       m_instanceType
+    //uint32 canJoinAsGroup;                                // 18       m_groupsAllowed
+    DBCString name;                                         // 19       m_name_lang
+    uint32 maxGroupSize;                                    // 20       m_maxGroupSize
+    uint32 HolidayWorldStateId;                             // 21       m_holidayWorldState
+    uint32 minLevel;                                        // 22       m_minlevel (sync with PvPDifficulty.dbc content)
+    uint32 maxLevel;                                        // 23       m_maxlevel (sync with PvPDifficulty.dbc content)
+    uint32 maxGroupSizeRated;                               // 24       4.0.1
+    uint32 minPlayers;                                      // 25       4.0.6.13596
+    uint32 maxPlayers;                                      // 26       4.0.1
+    uint32 rated;                                           // 27       4.0.3, value 2 for Rated Battlegrounds
+    //uint32                                                // 28       5.4.1
+    //uint32                                                // 29       5.4.1
 };
 
 /*struct Cfg_CategoriesEntry
@@ -774,6 +776,7 @@ struct CreatureDisplayInfoEntry
                                                             // 16       all 0
                                                             // 17       5.x
                                                             // 18       5.x
+                                                            // 19       5.4.1
 };
 
 struct CreatureDisplayInfoExtraEntry
@@ -841,7 +844,8 @@ struct CurrencyTypesEntry
     uint32 TotalCap;                                        // 7
     uint32 WeekCap;                                         // 8
     uint32 Flags;                                           // 9
-    //DBCString description;                                // 10
+    //uint32                                                // 10       5.4.1
+    //DBCString description;                                // 11
 
     bool HasPrecision() const   { return Flags & CURRENCY_FLAG_HAS_PRECISION; }
     bool HasSeasonCount() const { return Flags & CURRENCY_FLAG_HAS_SEASON_COUNT; }
@@ -883,9 +887,10 @@ struct DungeonEncounterEntry
     uint32 Difficulty;                                      // 2        m_difficulty
     uint32 encounterData;                                   // 3        m_orderIndex
     uint32 encounterIndex;                                  // 4        m_Bit
-    DBCString encounterName;                                // 5 - encounter name
+    DBCString encounterName;                                // 5        encounter name
     //uint32 nameLangFlags;                                 // 6        m_name_lang_flags
     //uint32 spellIconID;                                   // 7        m_spellIconID
+    //uint32                                                // 8        5.4.1
 };
 
 struct DurabilityCostsEntry
@@ -936,6 +941,8 @@ struct FactionEntry
     DBCString name;                                         // 23       m_name_lang
     //char*     description;                                // 24       m_description_lang
     //uint32                                                // 25
+    //uint32                                                // 26       5.4.1
+    //uint32                                                // 27       5.4.1
 
     // helpers
 
@@ -1480,8 +1487,8 @@ struct ScalingStatValuesEntry
     uint32  ssdMultiplier[5];                               // 10-14     Multiplier for ScalingStatDistribution
     uint32  armorMod[4];                                    // 15-18    Armor for level
     uint32  armorMod2[4];                                   // 19-22    Armor for level
-    //uint32 trash[24];                                     // 23-46
-    //uint32 unk2;                                          // 47       unk, probably also Armor for level (flag 0x80000?)
+    //uint32 trash[24];                                     // 23-47
+    //uint32 unk2;                                          // 48       unk, probably also Armor for level (flag 0x80000?)
 
 /*struct ScalingStatValuesEntry
 {
@@ -1622,21 +1629,20 @@ struct SoundEntriesEntry
     uint32          Id;                                     // 0        m_ID
     uint32          Type;                                   // 1        m_soundType
     DBCString       InternalName;                           // 2        m_name
-    DBCString       FileName[10];                           // 3-12     m_File[10]
-    DBCString       Unk13[10];                              // 13-22    m_Freq[10]
-    DBCString       Path;                                   // 23       m_DirectoryBase
-                                                            // 24       m_volumeFloat
-                                                            // 25       m_flags
-                                                            // 26       m_minDistance
-                                                            // 27       m_distanceCutoff
-                                                            // 28       m_EAXDef
-                                                            // 29       m_soundEntriesAdvancedID, new in 3.1
-    //unk                                                   // 30       4.0.0
-    //unk                                                   // 31       4.0.0
-    //unk                                                   // 32       4.0.0
-    //unk                                                   // 33       4.0.0
-    //unk                                                   // 34       4.3.0
-    //unk                                                   // 35       5.x
+    ///uint32         unk[10];                                // 3-12     unk[10]
+    //uint32          unk2[10];                               // 13-22    unk[10]
+                                                            // 23       m_volumeFloat
+                                                            // 24       m_flags
+                                                            // 25       m_minDistance
+                                                            // 26       m_distanceCutoff
+                                                            // 27       m_EAXDef
+                                                            // 28       m_soundEntriesAdvancedID, new in 3.1
+                                                            // 29       4.0.0
+                                                            // 30       4.0.0
+                                                            // 31       4.0.0
+                                                            // 32       4.0.0
+                                                            // 33       4.3.0
+                                                            // 34       5.x
 };
 
 struct ClassFamilyMask
@@ -1674,7 +1680,6 @@ struct ClassFamilyMask
     }
 };
 
-#define MAX_SPELL_REAGENTS 8
 #define MAX_SPELL_TOTEMS 2
 #define MAX_SPELL_TOTEM_CATEGORIES 2
 
@@ -1688,6 +1693,8 @@ struct SpellAuraOptionsEntry
     uint32    procChance;                                   // 4        m_procChance
     uint32    procCharges;                                  // 5        m_procCharges
     uint32    procFlags;                                    // 6        m_procTypeMask
+    //uint32                                                // 7        5.4.1
+    //uint32                                                // 8        5.4.1
 };
 
 // SpellAuraRestrictions.dbc
@@ -1785,7 +1792,7 @@ struct SpellCooldownsEntry
 struct SpellEffectEntry
 {
     //uint32    Id;                                           // 0        m_ID
-                                                            // 1        5.x
+    uint32    Difficulty;                                   // 1        m_difficulty
     uint32    Effect;                                       // 2        m_effect
     float     EffectMultipleValue;                          // 3        m_effectAmplitude
     uint32    EffectApplyAuraName;                          // 4        m_effectAura
@@ -1878,16 +1885,6 @@ struct SpellPowerEntry
                                                             // 12       5.x
 };
 
-// SpellReagents.dbc
-struct SpellReagentsEntry
-{
-    //uint32    Id;                                         // 0        m_ID
-    int32     Reagent[MAX_SPELL_REAGENTS];                  // 1-8      m_reagent
-    uint32    ReagentCount[MAX_SPELL_REAGENTS];             // 9-16     m_reagentCount
-                                                            // 17       5.x
-                                                            // 18       5.x
-};
-
 // SpellScaling.dbc
 struct SpellScalingEntry
 {
@@ -1956,16 +1953,18 @@ struct SpellMiscEntry
     uint32 AttributesEx9;                                   // 12
     uint32 AttributesEx10;                                  // 13
     uint32 AttributesEx11;                                  // 14
-    uint32 CastingTimeIndex;                                // 15       m_castingTimeIndex
-    uint32 DurationIndex;                                   // 16       m_durationIndex
-    uint32 rangeIndex;                                      // 17       m_rangeIndex
-    float  speed;                                           // 18       m_speed
-    uint32 SpellVisual[2];                                  // 19-20    m_spellVisualID
-    uint32 SpellIconID;                                     // 21       m_spellIconID
-    uint32 activeIconID;                                    // 22       m_activeIconID
-    uint32 SchoolMask;                                      // 23       m_schoolMask
+    uint32 AttributesEx12;                                  // 15
+    uint32 CastingTimeIndex;                                // 16       m_castingTimeIndex
+    uint32 DurationIndex;                                   // 17       m_durationIndex
+    uint32 rangeIndex;                                      // 18       m_rangeIndex
+    float  speed;                                           // 19       m_speed
+    uint32 SpellVisual[2];                                  // 20-21    m_spellVisualID
+    uint32 SpellIconID;                                     // 22       m_spellIconID
+    uint32 activeIconID;                                    // 23       m_activeIconID
+    uint32 SchoolMask;                                      // 24       m_schoolMask
 };
 
+struct SpellReagentsEntry;
 
 // Spell.dbc
 struct MANGOS_DLL_SPEC SpellEntry
@@ -2105,6 +2104,7 @@ struct MANGOS_DLL_SPEC SpellEntry
     uint32 GetAttributesEx9() const;
     uint32 GetAttributesEx10() const;
     uint32 GetAttributesEx11() const;
+    uint32 GetAttributesEx12() const;
 
     inline bool HasAttribute(SpellAttributes attribute) const { return GetAttributes() & attribute; }
     inline bool HasAttribute(SpellAttributesEx attribute) const { return GetAttributesEx() & attribute; }
@@ -2117,6 +2117,8 @@ struct MANGOS_DLL_SPEC SpellEntry
     inline bool HasAttribute(SpellAttributesEx8 attribute) const { return GetAttributesEx8() & attribute; }
     inline bool HasAttribute(SpellAttributesEx9 attribute) const { return GetAttributesEx9() & attribute; }
     inline bool HasAttribute(SpellAttributesEx10 attribute) const { return GetAttributesEx10() & attribute; }
+    inline bool HasAttribute(SpellAttributesEx11 attribute) const { return GetAttributesEx11() & attribute; }
+    inline bool HasAttribute(SpellAttributesEx12 attribute) const { return GetAttributesEx12() & attribute; }
 
     private:
         // prevent creating custom entries (copy data from original in fact)
@@ -2221,9 +2223,10 @@ struct SpellItemEnchantmentEntry
     //float                                                 // 19       5.x
     //uint32      minItemLevel;                             // 20       new in 3.1
     //int32                                                 // 21       5.x
-    //float                                                 // 22       5.x
-    //uint32                                                // 23       5.x
+    //int32                                                 // 22       5.4.1
+    //float                                                 // 23       5.x
     //uint32                                                // 24       5.x
+    //uint32                                                // 25       5.x
 };
 
 struct SpellItemEnchantmentConditionEntry
@@ -2317,9 +2320,10 @@ struct TaxiNodesEntry
     float     z;                                            // 4        m_z
     DBCString name;                                         // 5        m_Name_lang
     uint32    MountCreatureID[2];                           // 6-7      m_MountCreatureID[2]
-    //uint32 unk;                                           // 8  - 4.2.0
-    //float unk1;                                           // 9  - 4.2.0
-    //float unk2;                                           // 10 - 4.2.0
+    //uint32                                                // 8        5.4.1
+    //uint32 unk;                                           // 9        4.2.0
+    //float unk1;                                           // 10       4.2.0
+    //float unk2;                                           // 11       4.2.0
 };
 
 struct TaxiPathEntry

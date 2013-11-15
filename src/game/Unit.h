@@ -31,6 +31,7 @@
 #include "FollowerRefManager.h"
 #include "Utilities/EventProcessor.h"
 #include "MotionMaster.h"
+#include "DB2Structure.h"
 #include "DBCStructure.h"
 #include "Path.h"
 #include "WorldPacket.h"

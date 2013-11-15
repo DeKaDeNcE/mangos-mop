@@ -19,6 +19,7 @@
 #include "Common.h"
 #include "DBCStructure.h"
 #include "DBCStores.h"
+#include "DB2Stores.h"
 #include "SharedDefines.h"
 
 int32 SpellEntry::CalculateSimpleValue(SpellEffectIndex eff) const
@@ -427,6 +428,12 @@ uint32 SpellEntry::GetAttributesEx11() const
 {
     SpellMiscEntry const* misc = GetSpellMisc();
     return misc ? misc->AttributesEx11 : 0;
+}
+
+uint32 SpellEntry::GetAttributesEx12() const
+{
+    SpellMiscEntry const* misc = GetSpellMisc();
+    return misc ? misc->AttributesEx12 : 0;
 }
 
 uint32 SpellEntry::GetCastingTimeIndex() const
