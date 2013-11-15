@@ -32,7 +32,7 @@
 #include "WorldSession.h"
 
 /// List of Opcodes
-/// Max Opcode value in 5.1.0.16357 is 0xFFF
+/// Max Opcode value in 5.4.1.17538 is 0x7FFF
 enum Opcodes
 {
     MSG_WOW_CONNECTION                                    = 0x4F57, // 5.1.0 16357
